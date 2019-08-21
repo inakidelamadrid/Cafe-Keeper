@@ -9,6 +9,9 @@ function HomePage(){
       <p>
         <Link to='/inakidelamadrid'>inakidelamadrid</Link> on Github
       </p>
+      <p>
+        <Link to='/users'>React Hooks</Link> example page (CRUD users)
+      </p>
     </div>
   )
 }
