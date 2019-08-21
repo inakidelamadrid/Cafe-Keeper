@@ -1,4 +1,5 @@
 import React from 'react';
+import UserTable from './CRUDHooksPage/UserTable';
 
 
 const CRUDHooksPage = () =>{
@@ -11,6 +12,7 @@ const CRUDHooksPage = () =>{
         </div>
         <div className="flex-large">
           <h2>View users</h2>
+          <UserTable />
         </div>
       </div>
     </div>
