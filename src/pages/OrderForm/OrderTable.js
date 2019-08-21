@@ -6,30 +6,38 @@ export default function OrderTable(props){
   /*  Instead of using ReactTable I implemented my own custom table.
    *  But the props were inspired by that lib
    */
+  const NumberField = (column, cellData) =>{
+    let value = cellData[column.accessor]
+    return ( 
+      <input  type={column.inputtype}
+              value={value}
+              onChange={evt => props.editCell(evt.target.value, cellData.index, column.accessor)}/>
+    )
+  };
+
+  const FieldFactory = (column, cellData) =>{
+    switch(column.inputtype){
+      case 'number':
+        return NumberField(column, cellData)
+      default:
+        return "";
+    }
+  }
 
   const buildCell = (column, cellData, colIndex) => {
-      let key = `item#${cellData.index}.col#${colIndex}`;
-
-      // value is simple text if not editable
-      let value = cellData[column.accessor]
-      
       if( column.editable ){
         // otherwise is an input whose type is determined by the column's
         // config
-        value =( 
-          <input  type={column.inputtype}
-                  value={value}
-                  onChange={evt => props.editCell(evt.target.value, cellData.index, column.accessor)}/>
-        )
+        return FieldFactory(column, cellData);
       }
-      return (
-        <td key={key}>{value}</td>
-      )
+      return cellData[column.accessor];
   }
 
   const buildDataRows = (columns, data) =>{
     return data.map( item => {
-      let cols = columns.map( (column, colIndex) => buildCell(column, item, colIndex));
+      let cols = columns.map( (column, colIndex) => (
+        <td key={`item#${item.index}.col#${colIndex}`}>{buildCell(column, item, colIndex)}</td>
+      ))
       return (
         <tr key={`item#${item.index}`}>
           {cols}

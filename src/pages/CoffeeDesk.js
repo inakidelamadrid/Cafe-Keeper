@@ -19,6 +19,15 @@ export default function CoffeeDesk(props){
   const ESPRESSO = "espresso";
   const LATTE = "latte";
 
+  const MILK_TYPES = {
+    ALMOND: 'almond',
+    SOY: 'soy',
+    RICE: 'rice',
+    LACTOSE_FREE: 'lactose_free',
+    LIGHT: 'light',
+    REGULAR: 'regular'
+  }
+
   const selectCoffee = coffeeType => {
     props.grabCoffee(coffeeType);
   };
