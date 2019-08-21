@@ -15,11 +15,19 @@ export default function OrderTable(props){
     )
   };
   const SelectField = (column, cellData) => {
+    let value = cellData[column.accessor]
+    if( value === 'not_applicable'){
+      return "";
+    }
     return (
-      <select>
+      <select defaultValue={value}>
         {
           column.options.map( (option, index) =>(
-            <option key={`item#${cellData.index}.option#${index}`}>{option.title}</option>
+            <option 
+              key={`item#${cellData.index}.option#${index}`}
+              value={option.value}>
+              {option.title}
+            </option>
             )
           )
         }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Columns } from 'react-bulma-components';
-import CoffeeDesk, { MILK_TYPES } from './CoffeeDesk';
+import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO } from './CoffeeDesk';
 import OrderTable from './OrderForm/OrderTable';
 
 function OrderForm(){
@@ -18,11 +18,15 @@ function OrderForm(){
       options: Object.values(MILK_TYPES)},
   ];
   
+  
   const grabCoffee = coffeeType => {
+    let milk = (
+      coffeeType === ESPRESSO || coffeeType === AMERICANO
+    ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
     let index = items.length + 1
     let item = {
       espressoShots: 1,
-      milk: 'Regular',
+      milk,
       index,
       coffeeType 
     };

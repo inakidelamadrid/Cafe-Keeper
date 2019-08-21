@@ -19,15 +19,16 @@ export const MILK_TYPES = {
   RICE: {value: 'rice', title: 'Rice'},
   LACTOSE_FREE: {value: 'lactose_free', title: 'Lactose Free'},
   LIGHT: {value: 'light', title: 'LIGHT'},
-  REGULAR: {value:'regular', title: 'Regular'}
+  REGULAR: {value:'regular', title: 'Regular'},
+  NOT_APPLICABLE: {value:'not_applicable', title: ''},
 };
 
-export default function CoffeeDesk(props){
-  const AMERICANO = "americano";
-  const CAPUCCINO = "capuccino";
-  const ESPRESSO = "espresso";
-  const LATTE = "latte";
+export const ESPRESSO = "espresso";
+export const AMERICANO = "americano";
 
+export default function CoffeeDesk(props){
+  const CAPUCCINO = "capuccino";
+  const LATTE = "latte";
 
   const selectCoffee = coffeeType => {
     props.grabCoffee(coffeeType);
