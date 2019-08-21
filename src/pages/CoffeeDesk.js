@@ -16,14 +16,14 @@ import espresso from '../images/espresso.png';
 import latte from '../images/latte.png';
 
 
-export default function CoffeeDesk(){
+export default function CoffeeDesk(props){
   const AMERICANO = "americano";
   const CAPUCCINO = "capuccino";
   const ESPRESSO = "espresso";
   const LATTE = "latte";
 
   const selectCoffee = coffeeType => {
-    console.log(coffeeType);
+    props.grabCoffee(coffeeType);
   };
 
   return (

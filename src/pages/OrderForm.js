@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Columns } from 'react-bulma-components';
 import CoffeeDesk from './CoffeeDesk';
 import OrderTable from './OrderForm/OrderTable';
 
 function OrderForm(){
+  const [items, setItems] =  useState([])
+
   const columns = [
     {title: 'Specialty', accessor: 'coffeeType'},
     {title: 'Espresso Shots', accessor: 'espressoShots'},
     {title: 'Milk', accessor: 'milk'},
   ];
   
-  const items = [
-    {coffeeType: "latte", espressoShots: 1, milk: "light"},
-    {coffeeType: "capuccino", espressoShots: 1, milk: "regular"},
-  ];
+  //const items = [
+    //{coffeeType: "latte", espressoShots: 1, milk: "light"},
+    //{coffeeType: "capuccino", espressoShots: 1, milk: "regular"},
+  //];
 
+  const grabCoffee = coffeeType => {
+    let index = items.length + 1
+    let item = {
+      espressoShots: 1,
+      milk: 'Regular',
+      index,
+      coffeeType 
+    };
+    setItems([...items, item]);
+  }
   return (
     <Columns>
       <Columns.Column size="half">
@@ -39,7 +51,7 @@ function OrderForm(){
         </div>
       </Columns.Column>
       <Columns.Column>
-        <CoffeeDesk />
+        <CoffeeDesk grabCoffee={grabCoffee}/>
       </Columns.Column>
     </Columns>
   )
