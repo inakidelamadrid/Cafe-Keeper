@@ -6,12 +6,16 @@ export default function OrderTable(props){
   /*  Instead of using ReactTable I implemented my own custom table.
    *  But the props were inspired by that lib
    */
+  const changeValue = (itemIndex, colAccessor) => {
+    return evt => props.editCell(evt.target.value, itemIndex, colAccessor)
+  }
+
   const NumberField = (column, cellData) =>{
     let value = cellData[column.accessor]
     return ( 
       <input  type={column.inputtype}
               value={value}
-              onChange={evt => props.editCell(evt.target.value, cellData.index, column.accessor)}/>
+              onChange={changeValue(cellData.index, column.accessor)}/>
     )
   };
   const SelectField = (column, cellData) => {
@@ -20,7 +24,7 @@ export default function OrderTable(props){
       return "";
     }
     return (
-      <select defaultValue={value}>
+      <select value={value} onChange={changeValue(cellData.index, column.accessor)}>
         {
           column.options.map( (option, index) =>(
             <option 
