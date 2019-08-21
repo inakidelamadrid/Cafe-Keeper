@@ -35,7 +35,7 @@ function OrderForm(){
           </Form.Field>
         </div>
         <div>
-          <OrderTable columns={columns}/>
+          <OrderTable columns={columns} data={items}/>
         </div>
       </Columns.Column>
       <Columns.Column>
