@@ -13,10 +13,22 @@ const CRUDHooksPage = () =>{
   // state hook
   const [users, setUsers] = useState(usersData);
 
+  const [editing, setEditing ] = useState(false);
+
+  const initialFormState = { id: null, name: '', username: '' }
+  const [currentUser, setCurrentUser] = useState(initialFormState);
+
   const addUser = user =>{
     user.id = users.length + 1;
     setUsers([...users, user]);
   };
+
+  const editUser = user =>{
+    console.log("Edit");
+    console.log(user);
+    setEditing(true);
+    setCurrentUser(user)
+  }
 
   const deleteUser = id => {
     setUsers(users.filter(user => user.id !== id))
@@ -32,7 +44,7 @@ const CRUDHooksPage = () =>{
         </div>
         <div className="flex-large">
           <h2>View users</h2>
-          <UserTable users={users} deleteUser={deleteUser}/>
+          <UserTable users={users} editUser={editUser} deleteUser={deleteUser}/>
         </div>
       </div>
     </div>
