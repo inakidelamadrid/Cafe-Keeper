@@ -13,20 +13,21 @@ import espresso from '../images/espresso.png';
 import latte from '../images/latte.png';
 
 
+export const MILK_TYPES = {
+  ALMOND: {value: 'almond', title: 'Almond'},
+  SOY: {value: 'soy', title: 'Soy'},
+  RICE: {value: 'rice', title: 'Rice'},
+  LACTOSE_FREE: {value: 'lactose_free', title: 'Lactose Free'},
+  LIGHT: {value: 'light', title: 'LIGHT'},
+  REGULAR: {value:'regular', title: 'Regular'}
+};
+
 export default function CoffeeDesk(props){
   const AMERICANO = "americano";
   const CAPUCCINO = "capuccino";
   const ESPRESSO = "espresso";
   const LATTE = "latte";
 
-  const MILK_TYPES = {
-    ALMOND: 'almond',
-    SOY: 'soy',
-    RICE: 'rice',
-    LACTOSE_FREE: 'lactose_free',
-    LIGHT: 'light',
-    REGULAR: 'regular'
-  }
 
   const selectCoffee = coffeeType => {
     props.grabCoffee(coffeeType);

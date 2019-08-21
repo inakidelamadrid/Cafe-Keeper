@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Columns } from 'react-bulma-components';
-import CoffeeDesk from './CoffeeDesk';
+import CoffeeDesk, { MILK_TYPES } from './CoffeeDesk';
 import OrderTable from './OrderForm/OrderTable';
 
 function OrderForm(){
@@ -10,7 +10,12 @@ function OrderForm(){
   const columns = [
     {title: 'Specialty', accessor: 'coffeeType'},
     {title: 'Espresso Shots', accessor: 'espressoShots', editable: true, inputtype: 'number'},
-    {title: 'Milk', accessor: 'milk', editable: true, inputtype: 'select', options: ['Light', 'Soy']},
+    {
+      title: 'Milk',
+      accessor: 'milk',
+      editable: true,
+      inputtype: 'select',
+      options: Object.values(MILK_TYPES)},
   ];
   
   const grabCoffee = coffeeType => {

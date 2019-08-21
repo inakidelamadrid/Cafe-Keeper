@@ -19,7 +19,7 @@ export default function OrderTable(props){
       <select>
         {
           column.options.map( (option, index) =>(
-            <option key={`item#${cellData.index}.option#${index}`}>{option}</option>
+            <option key={`item#${cellData.index}.option#${index}`}>{option.title}</option>
             )
           )
         }
