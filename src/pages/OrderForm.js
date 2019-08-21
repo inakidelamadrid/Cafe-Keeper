@@ -33,6 +33,16 @@ function OrderForm(){
     setFormValues(newValues);
   };
 
+  const editCell = (value, itemIndex, colAccessor) => {
+    let newItems = items.map( item =>{
+      if( item.index === itemIndex){
+        item[colAccessor] = value;
+      }
+      return item;
+    });
+    setItems(newItems);
+  };
+
   return (
     <Columns>
       <Columns.Column size="half">
@@ -59,7 +69,7 @@ function OrderForm(){
           </Form.Field>
         </div>
         <div>
-          <OrderTable columns={columns} data={items}/>
+          <OrderTable columns={columns} data={items} editCell={editCell}/>
         </div>
       </Columns.Column>
       <Columns.Column>

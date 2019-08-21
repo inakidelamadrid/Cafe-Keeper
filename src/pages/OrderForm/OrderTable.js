@@ -9,10 +9,17 @@ export default function OrderTable(props){
 
   const buildCell = (column, cellData, colIndex) => {
       let key = `item#${cellData.index}.col#${colIndex}`;
+
+      // value is simple text if not editable
       let value = cellData[column.accessor]
+      
       if( column.editable ){
+        // otherwise is an input whose type is determined by the column's
+        // config
         value =( 
-          <input type={column.inputtype} value={value} readOnly/>
+          <input  type={column.inputtype}
+                  value={value}
+                  onChange={evt => props.editCell(evt.target.value, cellData.index, column.accessor)}/>
         )
       }
       return (
