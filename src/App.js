@@ -1,17 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import { Switch, Route } from 'react-router-dom';
-import CRUDHooksPage from './pages/CRUDHooksPage';
-import HomePage from './pages/HomePage';
-import UserPage from './pages/UserPage';
-import './App.css';
+
+import 'react-bulma-components/dist/react-bulma-components.min.css';
+import CoffeeDesk from './pages/CoffeeDesk';
 
 function App() {
   return (
     <Switch>
-      <Route exact path="/" component={HomePage}/>
-      <Route exact path="/users" component={CRUDHooksPage}/>
-      <Route exact path="/:id" component={UserPage}/>
+      <Route exact path="/" component={CoffeeDesk}/>
     </Switch>
   );
 }

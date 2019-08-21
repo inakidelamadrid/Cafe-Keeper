@@ -24,8 +24,6 @@ const CRUDHooksPage = () =>{
   };
 
   const editUser = user =>{
-    console.log("Edit");
-    console.log(user);
     setEditing(true);
     setCurrentUser(user)
   }
