@@ -5,6 +5,7 @@ import {
   Container,
   Heading,
   Image,
+  Modal,
   Section
 } from 'react-bulma-components';
 
@@ -16,6 +17,15 @@ import latte from '../images/latte.png';
 
 
 export default function CoffeeDesk(){
+  const AMERICANO = "americano";
+  const CAPUCCINO = "capuccino";
+  const ESPRESSO = "espresso";
+  const LATTE = "latte";
+
+  const selectCoffee = coffeeType => {
+    console.log(coffeeType);
+  };
+
   return (
     <Container>
       <Section>
@@ -29,24 +39,28 @@ export default function CoffeeDesk(){
           <Columns.Column>
               <Columns>
                 <Columns.Column size='half'>
-                  <Button color="white" className="Coffee-SelectionButton">
+                  <Button color="white" onClick={() => selectCoffee(ESPRESSO) }className="Coffee-SelectionButton">
                     <Image alt="Latte" src={espresso}/>
                   </Button>
                 </Columns.Column>
                 <Columns.Column>
-                  <Button color="white" className="Coffee-SelectionButton">
+                  <Button color="white" onClick={() => selectCoffee(LATTE)} className="Coffee-SelectionButton">
                     <Image alt="Latte" src={latte}/>
                   </Button>
                 </Columns.Column>
               </Columns>
               <Columns>
                 <Columns.Column size='half'>
-                  <Button color="white" className="Coffee-SelectionButton">
+                  <Button color="white" 
+                      className="Coffee-SelectionButton"
+                      onClick={() => selectCoffee(CAPUCCINO)}>
                     <Image alt="Capuccino" src={capuccino}/>
                   </Button>
                 </Columns.Column>
                 <Columns.Column>
-                  <Button color="white" className="Coffee-SelectionButton">
+                  <Button color="white"
+                          className="Coffee-SelectionButton"
+                          onClick={() => selectCoffee(AMERICANO)}>
                     <Image src={americano} alt="Americano"/>
                   </Button>
                 </Columns.Column>
