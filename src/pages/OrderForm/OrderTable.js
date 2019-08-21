@@ -8,11 +8,11 @@ export default function OrderTable(props){
    */
   const buildDataRows = (columns, data) =>{
     return data.map( item => {
-      let cols = columns.map( column => (
-        <td>{item[column.accessor]}</td>
+      let cols = columns.map( (column, colIndex) => (
+        <td key={`item#${item.index}.col#${colIndex}`}>{item[column.accessor]}</td>
       ));
       return (
-        <tr>
+        <tr key={`item#${item.index}`}>
           {cols}
         </tr>
       )
@@ -24,8 +24,8 @@ export default function OrderTable(props){
       <thead>
         <tr>
           {
-            props.columns.map( column => (
-              <th>
+            props.columns.map( (column, index) => (
+              <th key={`column#${index}`}>
                 {column.title}
               </th>
               )

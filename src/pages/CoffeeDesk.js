@@ -2,10 +2,7 @@ import React from 'react';
 import { 
   Button,
   Columns,
-  Container,
-  Heading,
   Image,
-  Modal,
   Section
 } from 'react-bulma-components';
 
