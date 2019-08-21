@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UserTable from './CRUDHooksPage/UserTable';
 
 
 const CRUDHooksPage = () =>{
+  const usersData = [
+    { id: 1, name: 'Tania', username: 'floppydiskette' },
+    { id: 2, name: 'Craig', username: 'siliconeidolon' },
+    { id: 3, name: 'Ben', username: 'benisphere' },
+  ];
+  
+  // state hook
+  const [users, setUsers] = useState(usersData);
+
   return (
     <div className="container">
       <h1>CRUD App with Hooks</h1>
@@ -12,7 +21,7 @@ const CRUDHooksPage = () =>{
         </div>
         <div className="flex-large">
           <h2>View users</h2>
-          <UserTable />
+          <UserTable users={users}/>
         </div>
       </div>
     </div>
