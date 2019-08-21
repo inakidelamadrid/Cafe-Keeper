@@ -10,7 +10,7 @@ function OrderForm(){
   const columns = [
     {title: 'Specialty', accessor: 'coffeeType'},
     {title: 'Espresso Shots', accessor: 'espressoShots', editable: true, inputtype: 'number'},
-    {title: 'Milk', accessor: 'milk'},
+    {title: 'Milk', accessor: 'milk', editable: true, inputtype: 'select', options: ['Light', 'Soy']},
   ];
   
   const grabCoffee = coffeeType => {

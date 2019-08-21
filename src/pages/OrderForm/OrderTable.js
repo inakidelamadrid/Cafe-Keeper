@@ -14,11 +14,25 @@ export default function OrderTable(props){
               onChange={evt => props.editCell(evt.target.value, cellData.index, column.accessor)}/>
     )
   };
+  const SelectField = (column, cellData) => {
+    return (
+      <select>
+        {
+          column.options.map( (option, index) =>(
+            <option key={`item#${cellData.index}.option#${index}`}>{option}</option>
+            )
+          )
+        }
+      </select>
+    )
+  }
 
   const FieldFactory = (column, cellData) =>{
     switch(column.inputtype){
       case 'number':
-        return NumberField(column, cellData)
+        return NumberField(column, cellData);
+      case 'select':
+        return SelectField(column, cellData);
       default:
         return "";
     }
