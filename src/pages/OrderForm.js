@@ -155,6 +155,7 @@ function OrderForm(){
     {
       title: 'Price',
       accessor: 'totalPrice',
+      isCurrency: true
     },
   ];
   

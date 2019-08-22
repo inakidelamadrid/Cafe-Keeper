@@ -1,0 +1,13 @@
+.hero-body .box{
+  font-weight: bold;
+  font-size: 1.5em;
+  &.noshadow{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    &.val{
+      background-color: transparent;
+    }
+  }
+}

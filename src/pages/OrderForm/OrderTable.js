@@ -1,5 +1,7 @@
 import React from 'react';
 import { Table, Form } from 'react-bulma-components';
+import CurrencyFormat from '../../components/CurrencyFormat';
+
 
 export default function OrderTable(props){
   /*  Instead of using ReactTable I implemented my own custom table.
@@ -62,14 +64,25 @@ export default function OrderTable(props){
       default:
         return "";
     }
+  };
+
+  const buildCell = (row, column) => {
+    if( column.editable )
+      return FieldFactory(column, row)
+
+    let value = row[column.accessor];
+    if ( column.isCurrency )
+      return (
+        <CurrencyFormat value={value}/>
+      )
+    return value;
+
   }
-
-
   const buildDataRows = (columns, data) =>{
     return data.map( item => {
       let cols = columns.map( (column, colIndex) => (
         <td key={`item#${item.index}.col#${colIndex}`}>{
-        column.editable ? FieldFactory(column, item) : item[column.accessor]
+          buildCell(item, column)
         }</td>
       ))
       return (
