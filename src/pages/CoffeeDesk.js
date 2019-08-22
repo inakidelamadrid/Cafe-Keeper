@@ -25,10 +25,10 @@ export const MILK_TYPES = {
 
 export const ESPRESSO = "espresso";
 export const AMERICANO = "americano";
+export const CAPUCCINO = "capuccino";
+export const LATTE = "latte";
 
 export default function CoffeeDesk(props){
-  const CAPUCCINO = "capuccino";
-  const LATTE = "latte";
 
   const selectCoffee = coffeeType => {
     props.grabCoffee(coffeeType);

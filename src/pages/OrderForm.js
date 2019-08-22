@@ -1,34 +1,80 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { Form, Columns } from 'react-bulma-components';
-import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO } from './CoffeeDesk';
+import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO, LATTE, CAPUCCINO } from './CoffeeDesk';
 import OrderTable from './OrderForm/OrderTable';
+
+const COFFEE_SIZES = {
+  [LATTE]:  [
+    {name: "Medium", price: 25},
+    {name: "Big", price: 32},
+  ],
+  [CAPUCCINO]: [
+    {name: "Medium", price: 25},
+    {name: "Big", price: 32},
+  ],
+  [ESPRESSO]: [
+    {name: "Only Size", price: 18},
+  ],
+  [AMERICANO]: [
+    {name: "Only Size", price: 20},
+  ]
+}
+
 
 function OrderForm(){
   const [items, setItems] =  useState([]);
   const [formValues, setFormValues] = useState({name: "", email: ""});
 
   const columns = [
-    {title: 'Specialty', accessor: 'coffeeType'},
-    {title: 'Espresso Shots', accessor: 'espressoShots', editable: true, inputtype: 'number'},
+    {
+      title: 'Specialty',
+      accessor: 'coffeeType'
+    },
+    {
+      title: 'Espresso Shots',
+      accessor: 'espressoShots',
+      editable: true,
+      inputtype: 'number'
+    },
     {
       title: 'Milk',
       accessor: 'milk',
       editable: true,
       inputtype: 'select',
-      options: Object.values(MILK_TYPES)},
+      options: Object.values(MILK_TYPES)
+    },
+    {
+      title: 'Size',
+      accessor: 'size',
+      editable: true,
+      inputtype: 'select',
+      options: [
+        {value: 'Big', title: 'Big'},
+        {value: 'Medium', title: 'Medium'},
+        {value: 'Only Size', title: 'Only Size'}
+      ]
+    },
   ];
   
-  
+  const getDefaultSize = coffeeType => {
+    let sizes = COFFEE_SIZES[coffeeType];
+    console.log(sizes);
+    return _.find(sizes, size => size.name === 'Big' || size.name === 'Only Size');
+  }
+
   const grabCoffee = coffeeType => {
     let milk = (
       coffeeType === ESPRESSO || coffeeType === AMERICANO
     ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
+
     let index = items.length + 1
     let item = {
       espressoShots: 1,
+      size: getDefaultSize(coffeeType).name,
       milk,
       index,
-      coffeeType 
+      coffeeType
     };
     setItems([...items, item]);
   }
