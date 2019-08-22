@@ -7,10 +7,10 @@ import {
 } from 'react-bulma-components';
 
 import './CoffeeDesk.scss';
-import americano from '../images/americano.png';
-import capuccino from '../images/capuccino.png';
-import espresso from '../images/espresso.png';
-import latte from '../images/latte.png';
+import americano from '../../images/americano.png';
+import capuccino from '../../images/capuccino.png';
+import espresso from '../../images/espresso.png';
+import latte from '../../images/latte.png';
 
 
 export const MILK_TYPES = {

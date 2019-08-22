@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 import { Form, Columns } from 'react-bulma-components';
-import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO, LATTE, CAPUCCINO } from './CoffeeDesk';
+import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO, LATTE, CAPUCCINO } from './OrderForm/CoffeeDesk';
 import OrderNote from './OrderForm/OrderNote';
 import OrderTable from './OrderForm/OrderTable';
 
