@@ -31,6 +31,8 @@ function OrderForm(){
   const [items, setItems] =  useState([]);
   const [formValues, setFormValues] = useState({name: "", email: ""});
 
+  const [flags, setFlags] = useState({milk: false});
+
   const getDefaultSize = coffeeType => {
     let sizes = COFFEE_SIZES[coffeeType];
     return _.find(sizes, size => size.name === 'Big' || size.name === 'Only Size');
@@ -47,6 +49,7 @@ function OrderForm(){
       espressoShots: 1,
       size: variation.name,
       price: variation.price,
+      totalPrice: variation.price,
       milk: defaultMilkValue,
       index,
       coffeeType
@@ -54,23 +57,27 @@ function OrderForm(){
     setItems([...items, item]);
   };
 
+  const calculateItemTotalPrice = (item, flagsParam) => {
+    let localFlags = flagsParam || flags;
+    let add = localFlags.milk ? ADDON_COST : 0;
+    editCell(item.price + add, item.index, 'totalPrice');
+  };
+
   const handleMilkTypeChange = (changedItem, column) => {
     let newMilkType = changedItem.milk;
     let isAddonMilk =  _.includes(ADDON_MILK_TYPES, newMilkType);
-    let addonAlreadyIncluded = changedItem.milkAddon === true;
-
-    let newPrice = null;
-
-    if( isAddonMilk && !addonAlreadyIncluded){
-      newPrice = changedItem.price + ADDON_COST;
-      changedItem.milkAddon = true;
-    }else if(!isAddonMilk && addonAlreadyIncluded){
-      newPrice = changedItem.price - ADDON_COST;
-      changedItem.milkAddon = false;
-    }else{
-      newPrice = changedItem.price;
+    
+    let milkStatus = {}
+    if( isAddonMilk && !flags.milk ){
+      milkStatus = {milk:true};
+    }else if(!isAddonMilk && flags.milk){
+      milkStatus = {milk:false};
     }
-    editCell(newPrice, changedItem.index, 'price');
+    setFlags(milkStatus);
+    // since setting state is async, we might end up missing this update
+    // to avoid complex callback code, we pass what we know and
+    // if not present, we use the state
+    calculateItemTotalPrice(changedItem, milkStatus);
   };
 
   const handleCoffeeSizeChange = (changedItem, column) =>{
@@ -79,6 +86,7 @@ function OrderForm(){
     let newPrice = _.find(sizes, size => size.name === newSize).price;
 
     editCell(newPrice, changedItem.index, 'price');
+    calculateItemTotalPrice(changedItem);
   };
 
   const handleChange = evt =>{
@@ -138,7 +146,7 @@ function OrderForm(){
     },
     {
       title: 'Price',
-      accessor: 'price',
+      accessor: 'totalPrice',
     },
   ];
   
