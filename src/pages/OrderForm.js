@@ -21,6 +21,11 @@ const COFFEE_SIZES = {
   ]
 }
 
+const ADDON_MILK_TYPES = _.map(
+  _.values(_.omit(MILK_TYPES, ['REGULAR', 'NOT_APPLICABLE', 'LIGHT'])),
+  milk_type => milk_type.value
+);
+const ADDON_COST = 5;
 
 function OrderForm(){
   const [items, setItems] =  useState([]);
@@ -32,7 +37,7 @@ function OrderForm(){
   };
 
   const grabCoffee = coffeeType => {
-    let milk = (
+    let defaultMilkValue = (
       coffeeType === ESPRESSO || coffeeType === AMERICANO
     ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
 
@@ -42,11 +47,30 @@ function OrderForm(){
       espressoShots: 1,
       size: variation.name,
       price: variation.price,
-      milk,
+      milk: defaultMilkValue,
       index,
       coffeeType
     };
     setItems([...items, item]);
+  };
+
+  const handleMilkTypeChange = (changedItem, column) => {
+    let newMilkType = changedItem.milk;
+    let isAddonMilk =  _.includes(ADDON_MILK_TYPES, newMilkType);
+    let addonAlreadyIncluded = changedItem.milkAddon === true;
+
+    let newPrice = null;
+
+    if( isAddonMilk && !addonAlreadyIncluded){
+      newPrice = changedItem.price + ADDON_COST;
+      changedItem.milkAddon = true;
+    }else if(!isAddonMilk && addonAlreadyIncluded){
+      newPrice = changedItem.price - ADDON_COST;
+      changedItem.milkAddon = false;
+    }else{
+      newPrice = changedItem.price;
+    }
+    editCell(newPrice, changedItem.index, 'price');
   };
 
   const handleCoffeeSizeChange = (changedItem, column) =>{
@@ -54,13 +78,7 @@ function OrderForm(){
     let newSize = changedItem.size;
     let newPrice = _.find(sizes, size => size.name === newSize).price;
 
-    let newItems = items.map( item =>{
-      if( item.index === changedItem.index){
-        item.price = newPrice;
-      }
-      return item;
-    });
-    setItems(newItems);
+    editCell(newPrice, changedItem.index, 'price');
   };
 
   const handleChange = evt =>{
@@ -97,15 +115,16 @@ function OrderForm(){
       accessor: 'milk',
       editable: true,
       inputtype: 'select',
-      options: Object.values(MILK_TYPES)
+      options: _.values(_.omit(MILK_TYPES, "NOT_APPLICABLE")),
+      afterCellChange: handleMilkTypeChange,
     },
     {
       title: 'Size',
       accessor: 'size',
       editable: true,
       inputtype: 'select',
-      options: (row) => {
-        if(_.includes([ESPRESSO], row.coffeeType)){
+      options: (item) => {
+        if(_.includes([ESPRESSO, AMERICANO], item.coffeeType)){
           return [{value: 'Only Size', title: 'Only Size'}]
         }else{
           return [
