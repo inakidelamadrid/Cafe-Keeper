@@ -28,9 +28,8 @@ function OrderForm(){
 
   const getDefaultSize = coffeeType => {
     let sizes = COFFEE_SIZES[coffeeType];
-    console.log(sizes);
     return _.find(sizes, size => size.name === 'Big' || size.name === 'Only Size');
-  }
+  };
 
   const grabCoffee = coffeeType => {
     let milk = (
@@ -38,19 +37,32 @@ function OrderForm(){
     ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
 
     let index = items.length + 1
+    let variation = getDefaultSize(coffeeType);
     let item = {
       espressoShots: 1,
-      size: getDefaultSize(coffeeType).name,
+      size: variation.name,
+      price: variation.price,
       milk,
       index,
       coffeeType
     };
     setItems([...items, item]);
-  }
+  };
 
-  const handleCoffeeSizeChange = (item, column) =>{
-    console.log("Handling Coffee Size Change");
-  }
+  const handleCoffeeSizeChange = (changedItem, column) =>{
+    let sizes = COFFEE_SIZES[changedItem.coffeeType];
+    let newSize = changedItem.size;
+    let newPrice = _.find(sizes, size => size.name === newSize).price;
+
+    let newItems = items.map( item =>{
+      if( item.index === changedItem.index){
+        item.price = newPrice;
+      }
+      return item;
+    });
+    setItems(newItems);
+  };
+
   const handleChange = evt =>{
     evt.preventDefault();
     let value = evt.target.value;
@@ -98,6 +110,10 @@ function OrderForm(){
         {value: 'Only Size', title: 'Only Size'}
       ],
       afterCellChange: handleCoffeeSizeChange
+    },
+    {
+      title: 'Price',
+      accessor: 'price',
     },
   ];
   
