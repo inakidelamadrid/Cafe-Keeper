@@ -58,6 +58,11 @@ function OrderForm(){
     setItems([...items, item]);
   };
 
+  const removeItem = (item) =>{
+    let newItems = _.reject(items, {'index': item.index });
+    setItems(newItems);
+  };
+
   const calculateItemTotalPrice = (item, flagsParam) => {
     let localFlags      = flagsParam || flags;
     let addOnCost       = localFlags.milk ? ADDON_COST : 0;
@@ -189,7 +194,7 @@ function OrderForm(){
           </Form.Field>
         </div>
         <div>
-          <OrderTable columns={columns} data={items} editCell={editCell}/>
+          <OrderTable columns={columns} data={items} editCell={editCell} remove={removeItem}/>
         </div>
       </Columns.Column>
       <Columns.Column>

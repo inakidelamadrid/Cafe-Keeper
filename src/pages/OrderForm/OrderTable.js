@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Form } from 'react-bulma-components';
+import { Button, Table, Form } from 'react-bulma-components';
 import CurrencyFormat from '../../components/CurrencyFormat';
 
 
@@ -77,8 +77,13 @@ export default function OrderTable(props){
       )
     return value;
 
-  }
-  const buildDataRows = (columns, data) =>{
+  };
+
+  const buildDataRows = (columns, data, options) =>{
+    let settings = Object.assign({
+      remove: false,
+    }, options || {});
+    
     return data.map( item => {
       let cols = columns.map( (column, colIndex) => (
         <td key={`item#${item.index}.col#${colIndex}`}>{
@@ -87,6 +92,12 @@ export default function OrderTable(props){
       ))
       return (
         <tr key={`item#${item.index}`}>
+          {settings.remove ? (
+            <td key={`item#${item.index}.remove`}>
+              <Button onClick={()=> settings.remove(item)}color="warning">X</Button>
+            </td>
+            ): ""
+          }
           {cols}
         </tr>
       )
@@ -97,6 +108,11 @@ export default function OrderTable(props){
     <Table>
       <thead>
         <tr>
+          { props.remove ? (
+            <th key="column#remove">
+              
+            </th>): null
+          }
           {
             props.columns.map( (column, index) => (
               <th key={`column#${index}`}>
@@ -110,7 +126,7 @@ export default function OrderTable(props){
       <tbody>
         {
           props.data.length > 0 ? 
-          buildDataRows(props.columns, props.data):
+          buildDataRows(props.columns, props.data, {remove: props.remove}):
           (
             <tr>
               <td span={props.columns.length}>
