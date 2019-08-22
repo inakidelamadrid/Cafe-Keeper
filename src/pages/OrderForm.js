@@ -49,6 +49,7 @@ function OrderForm(){
       }
       return item;
     });
+    console.log(newItems);
     setItems(newItems);
   };
 

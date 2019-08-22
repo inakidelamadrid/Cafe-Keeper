@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-bulma-components';
+import { Table, Form } from 'react-bulma-components';
 
 
 export default function OrderTable(props){
@@ -13,9 +13,14 @@ export default function OrderTable(props){
   const NumberField = (column, cellData) =>{
     let value = cellData[column.accessor]
     return ( 
-      <input  type={column.inputtype}
-              value={value}
-              onChange={changeValue(cellData.index, column.accessor)}/>
+      <Form.Field>
+        <Form.Control>
+          {/*we will cast the value so Bulma does not break */}
+          <Form.Input  type="number"
+                  value={"" + value}
+                  onChange={changeValue(cellData.index, column.accessor)}/>
+        </Form.Control>
+      </Form.Field>
     )
   };
   const SelectField = (column, cellData) => {
@@ -24,18 +29,22 @@ export default function OrderTable(props){
       return "";
     }
     return (
-      <select value={value} onChange={changeValue(cellData.index, column.accessor)}>
-        {
-          column.options.map( (option, index) =>(
-            <option 
-              key={`item#${cellData.index}.option#${index}`}
-              value={option.value}>
-              {option.title}
-            </option>
-            )
-          )
-        }
-      </select>
+      <Form.Field>
+        <Form.Control>
+          <Form.Select value={value} onChange={changeValue(cellData.index, column.accessor)}>
+            {
+              column.options.map( (option, index) =>(
+                <option 
+                  key={`item#${cellData.index}.option#${index}`}
+                  value={option.value}>
+                  {option.title}
+                </option>
+                )
+              )
+            }
+          </Form.Select>
+        </Form.Control>
+      </Form.Field>
     )
   }
 
