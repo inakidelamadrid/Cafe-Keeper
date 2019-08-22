@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table, Form } from 'react-bulma-components';
 
-
 export default function OrderTable(props){
   /*  Instead of using ReactTable I implemented my own custom table.
    *  But the props were inspired by that lib
@@ -21,6 +20,7 @@ export default function OrderTable(props){
           {/*we will cast the value so Bulma does not break */}
           <Form.Input  type="number"
                   value={"" + value}
+                  {...column.inputattribs}
                   onChange={changeValue(row, column)}/>
         </Form.Control>
       </Form.Field>

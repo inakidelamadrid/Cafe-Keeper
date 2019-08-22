@@ -108,7 +108,8 @@ function OrderForm(){
       title: 'Espresso Shots',
       accessor: 'espressoShots',
       editable: true,
-      inputtype: 'number'
+      inputtype: 'number',
+      inputattribs: {max: 2, min: 1}
     },
     {
       title: 'Milk',
