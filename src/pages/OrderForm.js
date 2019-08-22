@@ -104,11 +104,16 @@ function OrderForm(){
       accessor: 'size',
       editable: true,
       inputtype: 'select',
-      options: [
-        {value: 'Big', title: 'Big'},
-        {value: 'Medium', title: 'Medium'},
-        {value: 'Only Size', title: 'Only Size'}
-      ],
+      options: (row) => {
+        if(_.includes([ESPRESSO], row.coffeeType)){
+          return [{value: 'Only Size', title: 'Only Size'}]
+        }else{
+          return [
+            {value: 'Big', title: 'Big'},
+            {value: 'Medium', title: 'Medium'}
+          ]
+        }
+      },
       afterCellChange: handleCoffeeSizeChange
     },
     {

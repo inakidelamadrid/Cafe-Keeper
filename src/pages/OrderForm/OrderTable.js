@@ -32,12 +32,13 @@ export default function OrderTable(props){
     if( value === 'not_applicable'){
       return "";
     }
+    let options = typeof column.options === 'function' ? column.options(row) : column.options;
     return (
       <Form.Field>
         <Form.Control>
           <Form.Select value={value} onChange={changeValue(row, column)}>
             {
-              column.options.map( (option, index) =>(
+              options.map( (option, index) =>(
                 <option 
                   key={`item#${row.index}.option#${index}`}
                   value={option.value}>
