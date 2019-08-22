@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { Form, Columns } from 'react-bulma-components';
 import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO, LATTE, CAPUCCINO } from './CoffeeDesk';
+import OrderNote from './OrderForm/OrderNote';
 import OrderTable from './OrderForm/OrderTable';
 
 const COFFEE_SIZES = {
@@ -161,6 +162,9 @@ function OrderForm(){
   return (
     <Columns>
       <Columns.Column size="half">
+        <OrderNote  name={formValues.name}
+                    email={formValues.email}
+                    items={items}/>
         <div>
           <Form.Field>
             <Form.Label>Client's Name</Form.Label>
