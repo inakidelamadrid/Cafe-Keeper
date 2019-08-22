@@ -6,36 +6,40 @@ export default function OrderTable(props){
   /*  Instead of using ReactTable I implemented my own custom table.
    *  But the props were inspired by that lib
    */
-  const changeValue = (itemIndex, colAccessor) => {
-    return evt => props.editCell(evt.target.value, itemIndex, colAccessor)
+  const changeValue = (row, column) => evt =>{
+    props.editCell(evt.target.value, row.index, column.accessor);
+    if(column.afterCellChange)
+      column.afterCellChange(row, column);
   }
 
-  const NumberField = (column, cellData) =>{
-    let value = cellData[column.accessor]
+
+  const NumberField = (column, row) =>{
+    let value = row[column.accessor]
     return ( 
       <Form.Field>
         <Form.Control>
           {/*we will cast the value so Bulma does not break */}
           <Form.Input  type="number"
                   value={"" + value}
-                  onChange={changeValue(cellData.index, column.accessor)}/>
+                  onChange={changeValue(row, column)}/>
         </Form.Control>
       </Form.Field>
     )
   };
-  const SelectField = (column, cellData) => {
-    let value = cellData[column.accessor]
+
+  const SelectField = (column, row) => {
+    let value = row[column.accessor]
     if( value === 'not_applicable'){
       return "";
     }
     return (
       <Form.Field>
         <Form.Control>
-          <Form.Select value={value} onChange={changeValue(cellData.index, column.accessor)}>
+          <Form.Select value={value} onChange={changeValue(row, column)}>
             {
               column.options.map( (option, index) =>(
                 <option 
-                  key={`item#${cellData.index}.option#${index}`}
+                  key={`item#${row.index}.option#${index}`}
                   value={option.value}>
                   {option.title}
                 </option>
@@ -48,30 +52,24 @@ export default function OrderTable(props){
     )
   }
 
-  const FieldFactory = (column, cellData) =>{
+  const FieldFactory = (column, row) =>{
     switch(column.inputtype){
       case 'number':
-        return NumberField(column, cellData);
+        return NumberField(column, row);
       case 'select':
-        return SelectField(column, cellData);
+        return SelectField(column, row);
       default:
         return "";
     }
   }
 
-  const buildCell = (column, cellData, colIndex) => {
-      if( column.editable ){
-        // otherwise is an input whose type is determined by the column's
-        // config
-        return FieldFactory(column, cellData);
-      }
-      return cellData[column.accessor];
-  }
 
   const buildDataRows = (columns, data) =>{
     return data.map( item => {
       let cols = columns.map( (column, colIndex) => (
-        <td key={`item#${item.index}.col#${colIndex}`}>{buildCell(column, item, colIndex)}</td>
+        <td key={`item#${item.index}.col#${colIndex}`}>{
+        column.editable ? FieldFactory(column, item) : item[column.accessor]
+        }</td>
       ))
       return (
         <tr key={`item#${item.index}`}>

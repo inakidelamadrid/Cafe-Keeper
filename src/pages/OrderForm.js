@@ -26,6 +26,49 @@ function OrderForm(){
   const [items, setItems] =  useState([]);
   const [formValues, setFormValues] = useState({name: "", email: ""});
 
+  const getDefaultSize = coffeeType => {
+    let sizes = COFFEE_SIZES[coffeeType];
+    console.log(sizes);
+    return _.find(sizes, size => size.name === 'Big' || size.name === 'Only Size');
+  }
+
+  const grabCoffee = coffeeType => {
+    let milk = (
+      coffeeType === ESPRESSO || coffeeType === AMERICANO
+    ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
+
+    let index = items.length + 1
+    let item = {
+      espressoShots: 1,
+      size: getDefaultSize(coffeeType).name,
+      milk,
+      index,
+      coffeeType
+    };
+    setItems([...items, item]);
+  }
+
+  const handleCoffeeSizeChange = (item, column) =>{
+    console.log("Handling Coffee Size Change");
+  }
+  const handleChange = evt =>{
+    evt.preventDefault();
+    let value = evt.target.value;
+    let name = evt.target.name;
+    let newValues = {...formValues, [name]: value};
+    setFormValues(newValues);
+  };
+
+  const editCell = (value, itemIndex, colAccessor) => {
+    let newItems = items.map( item =>{
+      if( item.index === itemIndex){
+        item[colAccessor] = value;
+      }
+      return item;
+    });
+    setItems(newItems);
+  };
+
   const columns = [
     {
       title: 'Specialty',
@@ -53,51 +96,11 @@ function OrderForm(){
         {value: 'Big', title: 'Big'},
         {value: 'Medium', title: 'Medium'},
         {value: 'Only Size', title: 'Only Size'}
-      ]
+      ],
+      afterCellChange: handleCoffeeSizeChange
     },
   ];
   
-  const getDefaultSize = coffeeType => {
-    let sizes = COFFEE_SIZES[coffeeType];
-    console.log(sizes);
-    return _.find(sizes, size => size.name === 'Big' || size.name === 'Only Size');
-  }
-
-  const grabCoffee = coffeeType => {
-    let milk = (
-      coffeeType === ESPRESSO || coffeeType === AMERICANO
-    ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
-
-    let index = items.length + 1
-    let item = {
-      espressoShots: 1,
-      size: getDefaultSize(coffeeType).name,
-      milk,
-      index,
-      coffeeType
-    };
-    setItems([...items, item]);
-  }
-
-
-  const handleChange = evt =>{
-    evt.preventDefault();
-    let value = evt.target.value;
-    let name = evt.target.name;
-    let newValues = {...formValues, [name]: value};
-    setFormValues(newValues);
-  };
-
-  const editCell = (value, itemIndex, colAccessor) => {
-    let newItems = items.map( item =>{
-      if( item.index === itemIndex){
-        item[colAccessor] = value;
-      }
-      return item;
-    });
-    console.log(newItems);
-    setItems(newItems);
-  };
 
   return (
     <Columns>
