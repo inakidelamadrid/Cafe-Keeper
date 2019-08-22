@@ -58,9 +58,10 @@ function OrderForm(){
   };
 
   const calculateItemTotalPrice = (item, flagsParam) => {
-    let localFlags = flagsParam || flags;
-    let add = localFlags.milk ? ADDON_COST : 0;
-    editCell(item.price + add, item.index, 'totalPrice');
+    let localFlags      = flagsParam || flags;
+    let addOnCost       = localFlags.milk ? ADDON_COST : 0;
+    let extraShotsCost  = (item.espressoShots - 1) * ADDON_COST;
+    editCell(item.price + addOnCost + extraShotsCost, item.index, 'totalPrice');
   };
 
   const handleMilkTypeChange = (changedItem, column) => {
@@ -86,6 +87,11 @@ function OrderForm(){
     let newPrice = _.find(sizes, size => size.name === newSize).price;
 
     editCell(newPrice, changedItem.index, 'price');
+    calculateItemTotalPrice(changedItem);
+  };
+
+  const handleEspressoShotsChange = (changedItem, column) =>{
+    // in this case, it seems that the state updates before calculating the price
     calculateItemTotalPrice(changedItem);
   };
 
@@ -117,7 +123,8 @@ function OrderForm(){
       accessor: 'espressoShots',
       editable: true,
       inputtype: 'number',
-      inputattribs: {max: 2, min: 1}
+      inputattribs: {max: 2, min: 1},
+      afterCellChange: handleEspressoShotsChange
     },
     {
       title: 'Milk',
