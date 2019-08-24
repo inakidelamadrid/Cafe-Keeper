@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import CoffeesContext from '../../CoffeesContext';
 import { 
   Button,
   Columns,
@@ -13,22 +14,9 @@ import espresso from '../../images/espresso.png';
 import latte from '../../images/latte.png';
 
 
-export const MILK_TYPES = {
-  ALMOND: {value: 'almond', title: 'Almond'},
-  SOY: {value: 'soy', title: 'Soy'},
-  RICE: {value: 'rice', title: 'Rice'},
-  LACTOSE_FREE: {value: 'lactose_free', title: 'Lactose Free'},
-  LIGHT: {value: 'light', title: 'LIGHT'},
-  REGULAR: {value:'regular', title: 'Regular'},
-  NOT_APPLICABLE: {value:'not_applicable', title: ''},
-};
-
-export const ESPRESSO = "espresso";
-export const AMERICANO = "americano";
-export const CAPUCCINO = "capuccino";
-export const LATTE = "latte";
-
 export default function CoffeeDesk(props){
+  const COFFEES = useContext(CoffeesContext);
+  const {AMERICANO, CAPUCCINO, ESPRESSO, LATTE} = COFFEES.TYPES;
 
   const selectCoffee = coffeeType => {
     props.grabCoffee(coffeeType);
