@@ -1,34 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import CoffeesContext from '../CoffeesContext';
 import _ from 'lodash';
 import { Form, Columns } from 'react-bulma-components';
-import CoffeeDesk, { MILK_TYPES, ESPRESSO, AMERICANO, LATTE, CAPUCCINO } from './OrderForm/CoffeeDesk';
+import CoffeeDesk from './OrderForm/CoffeeDesk';
 import OrderNote from './OrderForm/OrderNote';
 import OrderTable from './OrderForm/OrderTable';
 
-const COFFEE_SIZES = {
-  [LATTE]:  [
-    {name: "Medium", price: 25},
-    {name: "Big", price: 32},
-  ],
-  [CAPUCCINO]: [
-    {name: "Medium", price: 25},
-    {name: "Big", price: 32},
-  ],
-  [ESPRESSO]: [
-    {name: "Only Size", price: 18},
-  ],
-  [AMERICANO]: [
-    {name: "Only Size", price: 20},
-  ]
-}
-
-const ADDON_MILK_TYPES = _.map(
-  _.values(_.omit(MILK_TYPES, ['REGULAR', 'NOT_APPLICABLE', 'LIGHT'])),
-  milk_type => milk_type.value
-);
-const ADDON_COST = 5;
 
 function OrderForm(){
+  const COFFEES = useContext(CoffeesContext);
+  const {AMERICANO, CAPUCCINO, ESPRESSO, LATTE} = COFFEES.TYPES;
+
   const [items, setItems] =  useState([]);
   const [formValues, setFormValues] = useState({name: "", email: ""});
 
@@ -39,10 +21,35 @@ function OrderForm(){
     return _.find(sizes, size => size.name === 'Big' || size.name === 'Only Size');
   };
 
+  const ADDON_MILK_TYPES = _.map(
+    _.values(_.omit(COFFEES.MILK_TYPES, ['REGULAR', 'NOT_APPLICABLE', 'LIGHT'])),
+    milk_type => milk_type.value
+  );
+
+  const COFFEE_SIZES = {
+    [LATTE]:  [
+      {name: "Medium", price: 25},
+      {name: "Big", price: 32},
+    ],
+    [CAPUCCINO]: [
+      {name: "Medium", price: 25},
+      {name: "Big", price: 32},
+    ],
+    [ESPRESSO]: [
+      {name: "Only Size", price: 18},
+    ],
+    [AMERICANO]: [
+      {name: "Only Size", price: 20},
+    ]
+  }
+
+  const ADDON_COST = 5;
+
+
   const grabCoffee = coffeeType => {
     let defaultMilkValue = (
       coffeeType === ESPRESSO || coffeeType === AMERICANO
-    ) ? MILK_TYPES.NOT_APPLICABLE.value : MILK_TYPES.REGULAR.value;
+    ) ? COFFEES.MILK_TYPES.NOT_APPLICABLE.value : COFFEES.MILK_TYPES.REGULAR.value;
 
     let index = items.length + 1
     let variation = getDefaultSize(coffeeType);
@@ -137,7 +144,7 @@ function OrderForm(){
       accessor: 'milk',
       editable: true,
       inputtype: 'select',
-      options: _.values(_.omit(MILK_TYPES, "NOT_APPLICABLE")),
+      options: _.values(_.omit(COFFEES.MILK_TYPES, "NOT_APPLICABLE")),
       afterCellChange: handleMilkTypeChange,
     },
     {
