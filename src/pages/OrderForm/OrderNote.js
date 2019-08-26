@@ -5,7 +5,6 @@ import CurrencyFormat from '../../components/CurrencyFormat';
 import './OrderNote.scss';
 
 export default function OrderNote(props){
-  const grandTotal = () => _.sum(_.map(props.items, item => item.totalPrice));
 
   return(
     <Hero id="OrderNote" color="light">
@@ -33,10 +32,10 @@ export default function OrderNote(props){
                 <p>{ props.email || "email@example.com"}</p>
               </Box>
               <Box className="noshadow val" >
-                <p>{ props.items.length }</p>
+                <p>{ props.itemCount }</p>
               </Box>
               <Box className="noshadow val" >
-                <CurrencyFormat value={grandTotal()}></CurrencyFormat>
+                <CurrencyFormat value={props.grandTotal}></CurrencyFormat>
               </Box>
             </Columns.Column>
           </Columns>

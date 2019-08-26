@@ -6,6 +6,7 @@ import 'react-bulma-components/dist/react-bulma-components.min.css';
 import {CoffeesProvider} from './CoffeesContext';
 import OrderForm from './pages/OrderForm';
 import RenderPropsExample from './pages/RenderProps';
+import HOC from './pages/HOC';
 
 
 function App() {
@@ -35,8 +36,9 @@ function App() {
       <Switch>
         <CoffeesProvider value={COFFEES}>
           <Route exact path="/" component={OrderForm}/>
+          <Route path="/HOC" component={HOC}/>
+          <Route path="/renderProps" component={RenderPropsExample}/>
         </CoffeesProvider>
-        <Route path="/renderProps" component={RenderPropsExample}/>
       </Switch>
     </Container>
   );

@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
 import CoffeesContext from '../CoffeesContext';
 import _ from 'lodash';
-import { Form, Columns } from 'react-bulma-components';
+import { Form, Columns, Button } from 'react-bulma-components';
+
+import API from '../api';
 import CoffeeDesk from './OrderForm/CoffeeDesk';
 import OrderNote from './OrderForm/OrderNote';
 import OrderTable from './OrderForm/OrderTable';
@@ -45,6 +47,7 @@ function OrderForm(){
 
   const ADDON_COST = 5;
 
+  const grandTotal = items => _.sum(_.map(items, item => item.totalPrice));
 
   const grabCoffee = coffeeType => {
     let defaultMilkValue = (
@@ -126,6 +129,39 @@ function OrderForm(){
     setItems(newItems);
   };
 
+  const createOrder = async evt => {
+    if( _.isEmpty(items) )
+      alert("Items is empty!");
+
+    const itemData = _.map(items, item =>{
+      let attributes = ['espressoShots', 'milk', 'size'];
+      let variant = _.pick(item, attributes);
+
+      return {
+        name: item.coffeeType,
+        index: item.index,
+        raw_price: item.price,
+        variant
+      };
+    });
+
+    const payload = {
+      items: itemData,
+      total : grandTotal(items),
+      grand_total: grandTotal(items)
+    };
+
+    try{
+      const res = await API.post(`orders/`, payload);
+      console.log(res);
+      console.log(res.data);
+    }catch(error){
+      console.log(error.response.data);
+    }
+    // get feedback
+    // show feedback in alert
+  };
+
   const columns = [
     {
       title: 'Specialty',
@@ -174,39 +210,52 @@ function OrderForm(){
 
   return (
     <Columns>
+
       <Columns.Column size="half">
         <OrderNote  name={formValues.name}
                     email={formValues.email}
-                    items={items}/>
-        <div>
-          <Form.Field>
-            <Form.Label>Client's Name</Form.Label>
-            <Form.Control>
-              <Form.Input name="name"
-                          value={formValues.name}
-                          placeholder="Text input"
-                          onChange={handleChange}/>
-            </Form.Control>
-          </Form.Field>
-        </div>
-        <div>
-          <Form.Field>
-            <Form.Label>Client's email</Form.Label>
-            <Form.Control>
-              <Form.Input name="email"
-                          value={formValues.email}
-                          placeholder="Text input"
-                          onChange={handleChange}/>
-            </Form.Control>
-          </Form.Field>
-        </div>
+                    itemCount={items.length}
+                    grandTotal={grandTotal(items)}/>
+        {/* Formulario */}
+        <Columns>
+          <Columns.Column>
+            <div>
+              <Form.Field>
+                <Form.Label>Client's Name</Form.Label>
+                <Form.Control>
+                  <Form.Input name="name"
+                              value={formValues.name}
+                              placeholder="Text input"
+                              onChange={handleChange}/>
+                </Form.Control>
+              </Form.Field>
+            </div>
+            <div>
+              <Form.Field>
+                <Form.Label>Client's email</Form.Label>
+                <Form.Control>
+                  <Form.Input name="email"
+                              value={formValues.email}
+                              placeholder="Text input"
+                              onChange={handleChange}/>
+                </Form.Control>
+              </Form.Field>
+            </div>
+          </Columns.Column>
+          <Columns.Column size="one-third">
+            <Button onClick={createOrder}>Create Order</Button>
+          </Columns.Column>
+        </Columns>
+        {/* Formulario */}
         <div>
           <OrderTable columns={columns} data={items} editCell={editCell} remove={removeItem}/>
         </div>
       </Columns.Column>
+      
       <Columns.Column>
         <CoffeeDesk grabCoffee={grabCoffee}/>
       </Columns.Column>
+
     </Columns>
   )
 }
